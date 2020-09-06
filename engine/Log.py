@@ -2,36 +2,20 @@ from FileHandler import FileHandler
 
 class _log:
     def __init__(self, file):
-        self._file = "log/{}.log".format(file)
+        self._fh = FileHandler()
+        self._file = self._fh.read("log/{}.log".format(file), False)
         
-    def write(self, text):
-        FH = FileHandler(self._file, True)
-        FH.write(text)
-        FH.save()
-        del FH
+    def __del__(self):
+        self._fh.save(self._file)
+    
+    write = lambda self, text: self._file.data.append(text) or self._fh.save(self._file)
+                       
+    clear = lambda self: self._fh.delete()
+                
+write = lambda file, msg: _log(file).write(msg)
         
-    def clear(self, delete):
-        FH = FileHandler(self._file, True)
-        if (delete):
-            FH.delete()
-        else:
-            FH._content = {}
-            FH.save()
-        
-class _ql:
-    def _shared(self, logType, msg = None):
-        lf = _log(logType)
-        if msg != None and not isinstance(msg, bool):
-            lf.write(msg)
-        elif msg != None:
-            lf.clear(msg)
-class e(_ql):
-    def __init__(self, msg = None): super()._shared("error", msg)
-class d(_ql):
-    def __init__(self, msg = None): super()._shared("debug", msg)
-class i(_ql):
-    def __init__(self, msg = None): super()._shared("info", msg)
-class w(_ql):
-    def __init__(self, msg = None): super()._shared("warn", msg)
-class clear(_ql):
-    def __init__(self, trgt, delt = True): super()._shared(trgt, delt)
+e = lambda msg = "": _log("error").write(msg)
+d = lambda msg = "": _log("debug").write(msg)
+i = lambda msg = "": _log("info").write(msg)
+w = lambda msg = "": _log("warn").write(msg)
+clear = lambda file: _log(file).clear()

@@ -4,15 +4,15 @@ from shapely.geometry.polygon import Polygon
 
 class CollisionShape:
     active = True
-    event = None # solid, trigger, health, move
+    event = None # solid, trigger
     data = None
     _polygon = None
     _max = (None, None)
     _min = (None, None)
     
     def __init__(self, points, event = "solid", data = 0):
-        self._max = (max(points[::2]), max(points[1::2]))
-        self._polygon = Polygon(list(zip(points[::2], points[1::2])))
+        self._max = (max([x[0] for x in points], max(y[1] for y in points)))
+        self._polygon = Polygon(points)
         self.event = event
         self.data = data
             

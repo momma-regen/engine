@@ -1,7 +1,7 @@
 from FileHandler import FileHandler
 
 class Level:
-    _name = ""
+    _name = None
     _images = []
     _entities = []
     _collision = []
@@ -10,11 +10,18 @@ class Level:
     
     def __init__(self, name, state = None):
         self._name = name
-        file = FileHandler(name)
-        self._images = file.read("images", [])
-        self._entities = file.read("entities", [])
-        self._collision = file.read("collision", [])
-        self._type = file.read("type", 0)
+        file = FileHandler().load("lvl/{}.dat".format(name))
+        self._images = file.images
+        self._entities = file.entities
+        self._collision = file.collision
+        self._type = file.type
         
-        state.player().pos(file.read("playerSpawnPos", None), True)
-        state.player().rot(file.read("playerSpawnRot", None), True)
+        state.player().pos(file.playerSpawnPos, True)
+        state.player().rot(file.playerSpawnRot, True)
+        
+    def collision(self, target):
+        cols = []
+        for entitiy in self._entities:
+            for inx, col in enumerate(entity._col):
+                if col.check(target): cols.append((entity, inx))
+        return cols

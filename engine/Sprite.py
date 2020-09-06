@@ -1,6 +1,6 @@
 from Helpers import isNumber, flatten
 from math import floor, ceil
-from Image import Image
+from Img import Img
 
 class Sprite(Image):
     _frame = 0 #FRAME

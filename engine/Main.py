@@ -24,14 +24,13 @@ def draw():
 
 #####################
 
-data = FileHandler("data/main.dat")
+data = FileHandler().load("data/main.dat")
 
-gameTitle = data.read(0, "GAME TITLE")
-screenSize = (data.read(1, 600), data.read(2, 400))
-FPS = data.read(3, 60)
+game_title = data.game_title
+screen_size = tuple(data.screen_size)
+FPS = data.frames_per_second
 clock = pygame.time.Clock()
 
-data.save()
 del data
 
 pygame.init()
