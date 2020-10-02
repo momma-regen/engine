@@ -2,8 +2,8 @@ import os
 import json
 import re
 import cryptography
-from Img import Img
-from File import File
+from engine.Img import Img
+from engine.File import File
 from cryptography.fernet import Fernet
 
 class FileHandler:
@@ -23,27 +23,31 @@ class FileHandler:
         file = File()
         if (is_data):
             try: content = Fernet(self.key()).decrypt(open(filepath, "rb").read())
-            except: content = str(open(filepath, "w+").close())[0:0] #open the file and initialize content as an empty string, all in one line
-            value = b""
-            for i in range(len(content)):
-                value += temp[i:i+1]
-                if value[-8:] == self._separation_mark or i == (len(content)-1):
-                    if file._data == None:
-                        file._data = value[:-8].decode("UTF-8")
-                    else:
-                        file._images.append(value[:-8])
-                    value = b""
-            file._data = json.loads(file._data)
-            file._images = list(map(lambda i_bytes: Image(i_bytes), file._images))
+            except: content = str(open(filepath, "w+").close())[0:0] #open the file and initialize content as an empty string, all in one line   
+            content = content.split(self._separation_mark)
+            img_start = 1
+            try: file._data = json.loads(content[0].decode("UTF-8"))
+            except: 
+                file._data = {}
+                img_start = 0
+            file._images = [Img(i_bytes) for i_bytes in content[img_start:]]
         else:
             try: file._data = re.compile("(\r\n|\r|\n)").split(open(filepath, "r").read())
             except: file._data = [open(filepath, "w+").close()][0:0] #same as above, but empty array
         self._loaded = True
         return file
 
-    def save(self, file):
-        if not _loaded: return
-        if isinstance(file._data, dict): open(file._filepath, "wb").write(json.dumps(file._data).encode() + self._separation_mark.join([img.to_bytes for img in file._images]))
-        else: open(file._filepath, "w").write("\n".join(file._data))
+    def save(self, file, override = False):
+        if not self._loaded and not override: return
+        if isinstance(file._data, dict): 
+            data = json.dumps(file._data).encode() + self._separation_mark #+ self._separation_mark.join([img.toBytes() for img in file._images if isinstance(img, Img)])
+            for image in file._images:
+                if isinstance(image, Img): data += image.toBytes() + self._separation_mark
+            data = data[:-8]
+            open(file._filepath, "wb").write(Fernet(self.key()).encrypt(data))
+        else: 
+            print(str(self._data))
+            open(file._filepath, "w").write("\n".join(file._data))
             
-    delete = lambda self, file: self._loaded = not bool(os.remove(file._filepath))
+    def delete(self, file): 
+        self._loaded = not bool(os.remove(file._filepath))

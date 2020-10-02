@@ -1,4 +1,4 @@
-from FileHandler import FileHandler
+from engine.FileHandler import FileHandler
 
 class Level:
     _name = None

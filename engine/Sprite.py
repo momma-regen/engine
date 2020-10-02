@@ -1,8 +1,8 @@
-from Helpers import isNumber, flatten
+from engine.Helpers import isNumber, flatten
 from math import floor, ceil
-from Img import Img
+from engine.Img import Img
 
-class Sprite(Image):
+class Sprite(Img):
     _frame = 0 #FRAME
     _currAnimation = 0 #INDEX
     _animations = [] #FRAMES
@@ -27,14 +27,14 @@ class Sprite(Image):
         except: return False
         return not bool(len(x)%4)
         
-    def animate(self):
+    def animate(self): # Animations are stores as [(Start X,Y), (End X,Y)]
         end = self._animations[self._currentAnimation][1]
         self._frame += 1
-        x, y = self.frame(False)
-        if y * 100 + x > end[1] * 100 + end[0]:
-            self._frame = 0
+        x, y = self.frame(False) # Horizontal and vertical index of current frame
+        if y * 100 + x > end[1] * 100 + end[0]: # Y is increased after going through a row of X's. Therefor, 1 Y = several X's. As long as there aren't more than 100 frames per row, this makes for an easy comparison
+            self._frame = 0 # Frame has gone past the last frame of animation. Start from beginning
             
-    def frame(self, bounds = True):
+    def frame(self, bounds = True): # Bounds returns the actual frame position on the image. Otherwise x and y will be the indicies of the frames horizontally and vertically
         start, end = self._animations[self._currentAnimation]
         over = max((start[0] + self._frame + 1) - self._max[0], 0)
         x = over - (self._max[0] * floor(over/self._max[0]))

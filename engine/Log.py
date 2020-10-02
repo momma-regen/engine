@@ -1,4 +1,4 @@
-from FileHandler import FileHandler
+from engine.FileHandler import FileHandler
 
 class _log:
     def __init__(self, file):

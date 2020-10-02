@@ -1,6 +1,6 @@
 from pygame import mouse
-from Control import Control
-from CollisionShape import CollisionShape
+from engine.Control import Control
+from engine.CollisionShape import CollisionShape
 
 class Menu:
     _name = None

@@ -1,5 +1,5 @@
 from math import floor
-from Sprite import Sprite
+from engine.Sprite import Sprite
 
 class Entity:
     _pos = (0,0)

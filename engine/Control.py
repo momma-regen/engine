@@ -1,5 +1,6 @@
 from pygame import mouse
-from CollisionShape import CollisionShape
+from engine.CollisionShape import CollisionShape
+from engine.Entity import Entity
 
 class Control(Entity):
     _func = lambda: None
