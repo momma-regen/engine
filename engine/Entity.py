@@ -1,7 +1,8 @@
 from math import floor
-from Sprite import Sprite
+from engine.Sprite import Sprite
+from engine.Obj import Obj
 
-class Entity:
+class Entity(Obj):
     _pos = (0,0)
     _rot = 0
     _col = []
@@ -20,22 +21,22 @@ class Entity:
         except: return False
         return True
             
-    def col(self, key, update = None):
+    def col(self, key = None, update = None):
         try:
             if not isinstance(update, CollisionShape): return self._col[key]
-            self._col[key] = update
+            self._col[key] = update if key != None else self._col
         except: return False
         return True
     
     def sprite(self, update = None):
-        if not isinstance(update, Sprite): return this._sprite
-        try: this._sprite = update
+        if not isinstance(update, Sprite): return self._sprite
+        try: self._sprite = update
         except: return False
         return True
     
-    def anim(self, key, update = None):
+    def anim(self, key = None, update = None):
         try: 
-            if not isinstance(update, int): return this._animations[key]
-            this._animations[key] = update
+            if not isinstance(update, int): return self._animations[key]
+            self._animations[key] = update if key != None else self._animations
         except: return False
         return True
