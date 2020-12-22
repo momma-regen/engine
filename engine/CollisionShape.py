@@ -1,7 +1,8 @@
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+from engine.Obj import Obj
 
-class CollisionShape:
+class CollisionShape(Obj):
     active = True
     event = None # solid, trigger
     data = None

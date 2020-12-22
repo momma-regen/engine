@@ -3,7 +3,7 @@ from engine.FileHandler import FileHandler
 class _log:
     def __init__(self, file):
         self._fh = FileHandler()
-        self._file = self._fh.read("log/{}.log".format(file), False)
+        self._file = self._fh.read(f"log/{file}.log", False)
         
     def __del__(self):
         self._fh.save(self._file)

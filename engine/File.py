@@ -1,4 +1,5 @@
 from engine.Img import Img
+from engine.Obj import Obj
 
 class File(object):
     _filepath = None

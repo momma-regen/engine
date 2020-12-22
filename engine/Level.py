@@ -1,6 +1,7 @@
 from engine.FileHandler import FileHandler
+from engine.Obj import Obj
 
-class Level:
+class Level(Obj):
     _name = None
     _images = []
     _entities = []
@@ -10,7 +11,7 @@ class Level:
     
     def __init__(self, name, state = None):
         self._name = name
-        file = FileHandler().load("lvl/{}.dat".format(name))
+        file = FileHandler().load(f"lvl/{name}.dat")
         self._images = file.images
         self._entities = file.entities
         self._collision = file.collision
@@ -22,6 +23,6 @@ class Level:
     def collision(self, target):
         cols = []
         for entitiy in self._entities:
-            for inx, col in enumerate(entity._col):
+            for inx, col in enumerate(entity.col()):
                 if col.check(target): cols.append((entity, inx))
         return cols

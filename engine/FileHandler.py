@@ -5,8 +5,9 @@ import cryptography
 from engine.Img import Img
 from engine.File import File
 from cryptography.fernet import Fernet
+from engine.Obj import Obj
 
-class FileHandler:
+class FileHandler(Obj):
     _key = None
     _loaded = False
     _separation_mark = b"\x9F\x44\x54\x46\x2A\x1A\x0A\x0A"

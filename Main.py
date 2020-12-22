@@ -9,10 +9,18 @@ def die():
     
 def update():
     quit = False
+    
+    
+    
     return not quit
 
 def draw():
-    pass
+    displaySurface.fill((0, 0, 0))
+    
+    
+def load(name):
+    currentLevel = Level(name)
+    
 
 data = FileHandler().load("data/main.dat")
 title = data.title
@@ -26,8 +34,11 @@ displaySurface = pygame.display.set_mode(screen_size)
 displaySurface.fill((0, 0, 0))
 pygame.display.set_caption(title)
 
+currentLevel = Level("0");
+player = Player()
+
 # Main Game Loop
 while True:
-    if not update() break;
+    if not update(): die()
     draw()
     clock.tick(fps)

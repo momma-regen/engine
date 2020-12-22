@@ -85,7 +85,7 @@ class FileGUI:
         else: img = self.loaded_images[indx]
             
         base = Toplevel()
-        base.title(self.file_lines[indx][0].cget("text") if needs_loading else "Image{}".format(str(indx+1)))
+        base.title(self.file_lines[indx][0].cget("text") if needs_loading else f"Image{str(indx+1)}"
         img = ImageTk.PhotoImage(img.display())
         label = Label(base, image=img)
         label.image = img
@@ -152,7 +152,7 @@ class FileGUI:
             
     def load_image(self, image):
         indx = self.loaded_images.index(image)
-        file_line = Label(master=self.loaded_frame, text="Image{}".format(str(indx + 1)))
+        file_line = Label(master=self.loaded_frame, text=f"Image{str(indx+1)}"
         file_view = Button(master=self.loaded_frame, text="View", command=lambda: self.view_image(indx, False))
         file_erase = Button(master=self.loaded_frame, text="Remove", command=lambda: self.delete_lines(indx, True))
         file_line.grid(column=0, row=int(indx))

@@ -16,7 +16,7 @@ class Sprite(Img):
         if isinstance(size, tuple) and isNumber(size[0]) and isNumber(size[1]): self._size = size
         if isinstance(frameSize, tuple) and isNumber(frameSize[0]) and isNumber(frameSize[1]): self._frameSize = frameSize
             
-        width, height = this._display.size
+        width, height = self._display.size
         self._max = (floor(width/self._frameSize[0]), floor(height/self._frameSize[1]))
         if size == None: size = self._frameSize
             
@@ -27,7 +27,7 @@ class Sprite(Img):
         except: return False
         return not bool(len(x)%4)
         
-    def animate(self): # Animations are stores as [(Start X,Y), (End X,Y)]
+    def animate(self): # Animations are stored as [(Start X,Y), (End X,Y)]
         end = self._animations[self._currentAnimation][1]
         self._frame += 1
         x, y = self.frame(False) # Horizontal and vertical index of current frame
@@ -42,6 +42,10 @@ class Sprite(Img):
         return ((x * self._frameSize, y * self._frameSize), ((x+1) * self._frameSize), (y+1) * self._frameSize) if bounds else (x, y)
     
     def size(self, update = None):
-        if not isinstance(update, tuple): return this._size
+        if not isinstance(update, tuple): return self._size
         if not isNumber(update[0]) or not isNumber(update[1]): return False
-        this._size = update
+        self._size = update
+        
+    def animation(self, update = None):
+        self._currAnimation = update if isinstance(update, int) else self._currAnimation
+        return self._currAnimation == update
